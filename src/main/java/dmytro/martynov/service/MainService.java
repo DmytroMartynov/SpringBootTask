@@ -14,10 +14,7 @@ public class MainService {
     RequestRepo requestRepo;
 
     public String addReq(Integer requestNumber, String date) {
-        PaymentRequest paymentRequest = new PaymentRequest();
-        paymentRequest.setRequestNumber(requestNumber);
-        paymentRequest.setDateOfRequest(date);
-        paymentRequest.setStatus(RequestStatus.getRandom().toString());
+        PaymentRequest paymentRequest = new PaymentRequest(requestNumber,RequestStatus.getRandom().toString(), date);
         requestRepo.save(paymentRequest);
         return "unique request id: " + paymentRequest.getId() + ". request status: " +
                 paymentRequest.getStatus() + ", saved!";

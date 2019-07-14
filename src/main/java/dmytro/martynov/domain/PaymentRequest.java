@@ -21,11 +21,12 @@ public class PaymentRequest {
     @Column(name = "status", nullable = false, unique = false)
     private String status;
 
-    public Timestamp getdateOfRequest() {
-        return dateOfRequest;
+    public PaymentRequest() {
     }
 
-    public void setDateOfRequest(String stringDate) {
+    public PaymentRequest(Integer requestNumber, String status, String stringDate) {
+        this.requestNumber = requestNumber;
+        this.status = status;
         Date date = null;
         try {
             date = formatter.parse(stringDate);
@@ -34,6 +35,14 @@ public class PaymentRequest {
         }
         assert date != null;
         this.dateOfRequest = new Timestamp(date.getTime());
+    }
+
+    public Timestamp getdateOfRequest() {
+        return dateOfRequest;
+    }
+
+    public void setDateOfRequest(String stringDate) {
+
     }
 
     public String getStatus() {
