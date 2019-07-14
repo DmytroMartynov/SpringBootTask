@@ -4,10 +4,9 @@ import dmytro.martynov.domain.PaymentRequest;
 import dmytro.martynov.domain.RequestStatus;
 import dmytro.martynov.repos.RequestRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class MainService {
@@ -32,22 +31,22 @@ public class MainService {
         return requestRepo.findById(id).get().getStatus();
     }
 
+    @Scheduled(fixedDelay = 60_000)
     public String paymentHolding() {
         Iterable< PaymentRequest > requestList = getAll();
         for (PaymentRequest iter : requestList) {
             if (iter.getStatus().equals(RequestStatus.ERROR.toString())) {
                 iter.setStatus(RequestStatus.HELD.toString());
                 requestRepo.save(iter);
-                return "Request status was changed from ERROR to Held!" + iter.getStatus();
+                return "Request status was changed from ERROR to Held!";
             } else if (iter.getStatus().equals(RequestStatus.PROCESSED.toString())) {
                 iter.setStatus(RequestStatus.HELD.toString());
                 requestRepo.save(iter);
                 return "Request status was changed from PROCESSED to Held!";
             }
         }
-        return "Payment OK!";
+        return "Payment is OK!";
     }
-
 }
 
 
